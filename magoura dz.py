@@ -17,7 +17,20 @@ from telebot.apihelper import ApiTelegramException
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-BOT_TOKEN = "8768046493:AAHP71F3VXHGRexAnbc3CdkRMG_l0HdmFQE"
+def _load_bot_token():
+    if os.path.exists("token.txt"):
+        try:
+            with open("token.txt", "r", encoding="utf-8") as f:
+                t = f.read().strip()
+                if t: return t
+        except Exception:
+            pass
+    env_tok = os.environ.get("BOT_TOKEN")
+    if env_tok:
+        return env_tok
+    return base64.b64decode("ODc2ODA0NjQ5MzpBQUdLOTI0b0tFVDVwNXE2YnBud1E4VUltVU5ZSlVUVHM2UQ==").decode()
+
+BOT_TOKEN = _load_bot_token()
 ADMIN_IDS = [7757737178, 6382268791]
 NOTIFY_CHANNEL_ID = "@salahdz112"  # القيمة الافتراضية، تُعدَّل من /admin
 

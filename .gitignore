@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+token.txt
+.env
+venv/
+ooredoo_users.json
+ooredoo_activations.json
+bot_settings.json
+bot_known_users.json
+bot_referrals.json
