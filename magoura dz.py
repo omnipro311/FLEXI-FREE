@@ -531,11 +531,6 @@ def ooredoo_send_otp(msisdn, device):
             _otp_dbg("status", proxy, r1)
             if not r1 or r1.get("ip_blocked") or r1.get("code") != 200: continue
 
-            h2 = ooredoo_base_headers(msisdn, ooredoo_new_fingerprint(), ooredoo_new_corr_id(), ooredoo_now_ms(), iid, psig)
-            r2 = ooredoo_http_request("HEAD", f"{OOREDOO_BFF}/userInfo?msisdn={msisdn}", h2, proxy=proxy, timeout=8)
-            _otp_dbg("userInfo", proxy, r2)
-            if not r2 or r2.get("ip_blocked") or r2.get("code") not in (200, 204): continue
-
             for p34 in all_proxies:
                 ts = ooredoo_now_ms(); corr = ooredoo_new_corr_id()
                 h3 = ooredoo_base_headers(msisdn, ooredoo_new_fingerprint(), corr, ts, iid, psig)
@@ -1670,19 +1665,20 @@ def handle_callbacks_async(call):
         if not sent_photo:
             bot.send_message(chat_id, f"{result_msg}", reply_markup=get_main_menu_keyboard())
         
-        try:
-            username = f"@{call.from_user.username}" if call.from_user.username else (call.from_user.first_name or "مستخدم")
-            masked_num = mask_msisdn(msisdn)
-            notif_text = (
-                f"🎉 **عملية تفعيل ناجحة**\n\n"
-                f"👤 المستخدم: {username}\n"
-                f"📱 الرقم: `{masked_num}`\n"
-                f"📦 التفاصيل: {result_msg}\n\n"
-                f"⚡ تم عبر 𝐒𝐀𝐋𝐀𝐇-𝐃𝐙 "
-            )
-            bot.send_message(get_notify_channel(), notif_text, parse_mode='Markdown')
-        except Exception as e:
-            print(f"Channel notification error: {e}")
+        if str(result_msg).startswith("✅"):
+            try:
+                username = f"@{call.from_user.username}" if call.from_user.username else (call.from_user.first_name or "مستخدم")
+                masked_num = mask_msisdn(msisdn)
+                notif_text = (
+                    f"🎉 **عملية تفعيل ناجحة**\n\n"
+                    f"👤 المستخدم: {username}\n"
+                    f"📱 الرقم: `{masked_num}`\n"
+                    f"📦 التفاصيل: {result_msg}\n\n"
+                    f"⚡ تم عبر 𝐒𝐀𝐋𝐀𝐇-𝐃𝐙 "
+                )
+                bot.send_message(get_notify_channel(), notif_text, parse_mode='Markdown')
+            except Exception as e:
+                print(f"Channel notification error: {e}")
 
 if __name__ == "__main__":
     print("=" * 60)
