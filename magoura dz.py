@@ -518,7 +518,8 @@ def _otp_dbg(step, proxy, r):
     if r is None:
         print(f"[OTP] {step} via {host}: no response (timeout/connection error)")
     else:
-        print(f"[OTP] {step} via {host}: code={r.get('code')} ip_blocked={bool(r.get('ip_blocked'))}")
+        body_snip = str(r.get('body', '')).strip().replace('\n', ' ')[:200]
+        print(f"[OTP] {step} via {host}: code={r.get('code')} ip_blocked={bool(r.get('ip_blocked'))} resp={body_snip}")
 
 def ooredoo_send_otp(msisdn, device):
     try:
