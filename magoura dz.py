@@ -18,7 +18,7 @@ from telebot.apihelper import ApiTelegramException
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 BOT_TOKEN = "8768046493:AAHP71F3VXHGRexAnbc3CdkRMG_l0HdmFQE"
-ADMIN_IDS = [7757737178]
+ADMIN_IDS = [7757737178, 6382268791]
 NOTIFY_CHANNEL_ID = "@salahdz112"  # القيمة الافتراضية، تُعدَّل من /admin
 
 # قائمة قنوات الاشتراك الإجباري
